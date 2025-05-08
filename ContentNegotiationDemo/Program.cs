@@ -1,3 +1,5 @@
+using ContentNegotiationDemo.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,9 +11,14 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers(options =>
 {
-    // Remove JSON formatter
-    options.OutputFormatters.RemoveType<Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter>();
-}).AddXmlSerializerFormatters(); //Adding XML Formatter
+    // Enable 406 Not Acceptable status code
+    options.ReturnHttpNotAcceptable = true;
+})// Optionally, configure JSON options or other formatter settings
+.AddJsonOptions(options =>
+{
+    // Configure JSON serializer settings if needed
+    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+});
 
 var app = builder.Build();
 
@@ -21,6 +28,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<CustomNotAcceptableMiddleware>();
 
 app.UseHttpsRedirection();
 
