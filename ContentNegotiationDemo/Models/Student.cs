@@ -4,7 +4,7 @@ namespace ContentNegotiationDemo.Models
 {
     public class Student
     {
-        [JsonIgnore]
+        
         public int Id { get; set; } //Sensitive property
 
         public string Name { get; set; }
@@ -13,7 +13,7 @@ namespace ContentNegotiationDemo.Models
 
         public int Age { get; set; }
 
-        [JsonIgnore]
+        
         public int Salary { get; set; } //Sensitive property
 
         public string Department { get; set; }

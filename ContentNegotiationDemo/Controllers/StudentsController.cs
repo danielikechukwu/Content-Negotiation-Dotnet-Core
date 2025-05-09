@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ContentNegotiationDemo.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class StudentsController : ControllerBase
     {
@@ -22,6 +22,19 @@ namespace ContentNegotiationDemo.Controllers
             return Ok(listStudents);
         }
 
+        [HttpGet]
+        public ActionResult<List<StudentDTO>> GetStudentDTOs()
+        {
+            var studentDTOs = listStudents.Select(x => new StudentDTO { 
+                Name = x.Name,
+                Age = x.Age,
+                Gender = x.Gender,
+                Department = x.Department
+            }).ToList();
+
+            return Ok(studentDTOs);
+        }
+
         [HttpPost]
         public ActionResult<Student> AddStudent(Student student)
         {
@@ -33,6 +46,29 @@ namespace ContentNegotiationDemo.Controllers
                 student.Salary = 3000;
                 listStudents.Add(student);
                 return Ok(student);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost]
+        public ActionResult<StudentDTO> CreateStudent(StudentDTO studentDto)
+        {
+            if(studentDto != null)
+            {
+                var newStudent = new Student
+                {
+                    Id = listStudents.Count + 1,    // Set server-side
+                    Salary = 3000,                   // Set server-side
+                    Name = studentDto.Name,
+                    Age = studentDto.Age,
+                    Gender = studentDto.Gender,
+                    Department = studentDto.Department
+                };
+
+                listStudents.Add(newStudent);
+
+                return Ok(studentDto);
             }
 
             return BadRequest();
