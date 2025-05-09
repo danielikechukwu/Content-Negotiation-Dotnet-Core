@@ -9,17 +9,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers(options =>
-{
-    // Enable 406 Not Acceptable status code
-    options.ReturnHttpNotAcceptable = true;
-})// Optionally, configure JSON options or other formatter settings
-.AddJsonOptions(options =>
-{
-    // Configure JSON serializer settings if needed
-    options.JsonSerializerOptions.PropertyNamingPolicy = null;
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
